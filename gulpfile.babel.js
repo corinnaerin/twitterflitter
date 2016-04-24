@@ -4,8 +4,8 @@ import babel from 'babel-core/register'
 import babelify from 'babelify'
 import browserify from 'browserify'
 import buffer from 'vinyl-buffer'
+import clean from 'gulp-clean'
 import cleanCSS from 'gulp-clean-css'
-import del from 'del'
 import gulp from 'gulp'
 import gutil from 'gulp-util'
 import htmlmin from 'gulp-htmlmin'
@@ -42,7 +42,8 @@ gulp.task('watch', ['build'], () => {
 });
 
 gulp.task('clean', () => {
-    return del(`${dirs.build}/**/*`)
+    return gulp.src(dirs.build, { read: false })
+        .pipe(clean())
 });
 
 gulp.task('sass', ['clean'], () => {
