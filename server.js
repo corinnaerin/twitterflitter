@@ -1,7 +1,7 @@
 const express = require('express');
 
-const ipaddress = "127.0.0.1" ;
-const port = 8080;
+const ipaddress = process.env.PORT ? undefined : '127.0.01';
+const port = process.env.PORT || 8080;
 
 const app = express();
 const router = express.Router();
