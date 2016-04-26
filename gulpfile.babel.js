@@ -32,21 +32,29 @@ gulp.task('test', () => {
         }))
 });
 
-gulp.task('watch', ['build'], () => {
+gulp.task('nodemon', ['build'], () => {
     return nodemon({
         script: 'server.js',
         ext: 'html js scss json gif png',
         ignore: 'dist/*',
-        tasks: ['build']
+        tasks: ['build'] //This does not work in windows due to a bug in gulp-nodemon, which is why there's a separate watch task below
     })
 });
 
-gulp.task('clean', () => {
-    return gulp.src(dirs.build, { read: false })
-        .pipe(clean())
+gulp.task('watch', ['build', 'nodemon'], () => {
+    gulp.watch(`${dirs.src}/images/**/*`, ['images']);
+    gulp.watch(`${dirs.src}/scripts/**/*`, ['scripts']);
+    gulp.watch(`${dirs.src}/styles/**/*`, ['sass']);
+    gulp.watch(`${dirs.src}/**/*.html`, ['htmlmin']);
 });
 
-gulp.task('sass', ['clean'], () => {
+gulp.task('cleanCSS', () => {
+    return gulp.src(`${dirs.build}/styles`, { read: false })
+        .pipe(clean());
+});
+
+gulp.task('sass', ['cleanCSS'], () => {
+
     return gulp.src(`${dirs.src}/styles/*.scss`)
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
@@ -55,18 +63,35 @@ gulp.task('sass', ['clean'], () => {
         .pipe(gulp.dest(`${dirs.build}/styles`))
 });
 
-gulp.task('htmlmin', ['clean'], () => {
+gulp.task('cleanHTML', () => {
+    return gulp.src(`${dirs.build}/**/*.html`, { read: false })
+        .pipe(clean());
+});
+
+gulp.task('htmlmin', ['cleanHTML'], () => {
     return gulp.src(`${dirs.src}/**/*.html`)
         .pipe(htmlmin({collapseWhitespace: true}))
         .pipe(gulp.dest(dirs.build))
 });
 
-gulp.task('images', ['clean'], () => {
-   return gulp.src(`${dirs.src}/images/**/*`)
-       .pipe(gulp.dest(`${dirs.build}/images`))
+gulp.task('cleanImages', () => {
+    return gulp.src(`${dirs.build}/images`, { read: false })
+        .pipe(clean());
 });
 
-gulp.task('scripts', ['clean'], () => {
+gulp.task('images', ['cleanImages'], () => {
+    return gulp.src(`${dirs.src}/images/**/*`)
+        .pipe(gulp.dest(`${dirs.build}/images`))
+});
+
+gulp.task('cleanScripts', () => {
+    return gulp.src(`${dirs.build}/scripts`, { read: false })
+        .pipe(clean());
+});
+
+gulp.task('scripts', ['cleanScripts'], () => {
+    gulp.src(`${dirs.build}/scripts`, { read: false })
+        .pipe(clean());
     return browserify({
             entries: `${dirs.src}/scripts/app.js`,
             debug: true
@@ -83,3 +108,4 @@ gulp.task('scripts', ['clean'], () => {
 });
 
 gulp.task('build', ['sass', 'scripts', 'htmlmin', 'images']);
+
