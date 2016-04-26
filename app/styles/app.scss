@@ -1,12 +1,9 @@
-$backgroundColor: #8dc5ff;
-
 body {
-    background-color: $backgroundColor;
-}
+    transition: all 0.8s;
+    text-shadow: 1px 1px 2px black;
+    font-family: 'Josefin Slab', serif;
 
-img {
-    display: block;
-    margin: auto;
-    box-shadow: 10px 10px 20px 0 rgba(0,0,0,0.75);
-    border: 2px solid black;
+    h1 {
+        text-align:center;
+    }
 }
