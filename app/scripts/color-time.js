@@ -19,6 +19,9 @@ class ColorTime {
             'background-color': Color.getCSSFromRGB(backgroundColor),
             'color': Color.getCSSFromRGB(fontColor)
         });
+
+        $('#bg-color').text(Color.getHexFromRGB(backgroundColor));
+        $('#text-color').text(Color.getHexFromRGB(fontColor));
     }
 }
 

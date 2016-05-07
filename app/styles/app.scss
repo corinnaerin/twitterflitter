@@ -1,9 +1,24 @@
+@import '_mixins';
+
 body {
     transition: all 0.8s;
     text-shadow: 1px 1px 2px black;
     font-family: 'Josefin Slab', serif;
+    padding: 0;
+    margin: 0;
 
-    h1 {
-        text-align:center;
+    *,
+    *:after,
+    *::before {
+        box-sizing: border-box;
     }
+
+    #container {
+        @include fixed();
+        border: 0 solid #333;
+        transition: border-width 0.3s, background-color 0.3s, height 0s 0.3s;
+
+        @import '_menu';
+    }
+
 }

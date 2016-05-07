@@ -49,27 +49,40 @@ class Color {
         }
     }
 
+    static getHexFromRGB(color) {
+        return [
+            color.r.toString(16),
+            color.g.toString(16),
+            color.b.toString(16)
+        ].join('').toUpperCase();
+    }
+
     /*
      * Transform functions
      */
 
     static adjustBrightness(color) {
-        //TODO: make this adjustment more intelligent?
         var darker = color.r > 128 && color.g > 128 && color.b > 128;
 
         if (darker) {
             return {
-                r: color.r - 100,
-                g: color.g - 100,
-                b: color.b - 100
+                r: Color.normalizeColorBit(color.r - 100),
+                g: Color.normalizeColorBit(color.g - 100),
+                b: Color.normalizeColorBit(color.b - 100)
             }
         } else {
             return {
-                r: color.r + 100,
-                g: color.g + 100,
-                b: color.b + 100
+                r: Color.normalizeColorBit(color.r + 100),
+                g: Color.normalizeColorBit(color.g + 100),
+                b: Color.normalizeColorBit(color.b + 100)
             }
         }
+    }
+
+    static normalizeColorBit(x) {
+        if (x > 255) return 255;
+        if (x < 0) return 0;
+        return x;
     }
 
     static shift(data) {
