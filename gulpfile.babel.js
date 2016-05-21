@@ -55,12 +55,13 @@ gulp.task('cleanCSS', () => {
 });
 
 gulp.task('sass', ['cleanCSS'], () => {
+
     return gulp.src(`${dirs.src}/styles/*.scss`)
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
         .pipe(autoprefixer( {
             browsers: ['last 2 versions'],
-            cascade: false
+
         }))
         .pipe(cleanCSS())
         .pipe(sourcemaps.write('./'))
